@@ -17,6 +17,9 @@ class User(db.Model):
     created_at = db.Column(db.DateTime)
     updated_at = db.Column(db.DateTime)
 
+    rating = db.relationship("Rating", back_populates="users")
+    favorite = db.relationship("Favorite", back_populates="users")
+
     def __repr__(self):
         """Show user info."""
         return f"<User user_id={self.user_id} email={self.email}>"
@@ -33,6 +36,9 @@ class Place(db.Model):
     address = db.Column(db.String)
     created_at = db.Column(db.DateTime)
     updated_at = db.Column(db.DateTime)
+
+    rating = db.relationship("Rating", back_populates="places")
+    favorite = db.relationship("Favorite", back_populates="places")
 
     def __repr__(self):
         """Show place info."""
