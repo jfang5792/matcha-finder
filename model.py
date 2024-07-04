@@ -17,8 +17,8 @@ class User(db.Model):
     created_at = db.Column(db.DateTime)
     updated_at = db.Column(db.DateTime)
 
-    rating = db.relationship("Rating", back_populates="users")
-    favorite = db.relationship("Favorite", back_populates="users")
+    rating = db.relationship("Rating", back_populates="user")
+    favorite = db.relationship("Favorite", back_populates="user")
 
     def __repr__(self):
         """Show user info."""
@@ -31,14 +31,13 @@ class Place(db.Model):
     place_id = db.Column(db.Integer, autoincrement=True, primary_key=True)
     name = db.Column(db.String)
     description = db.Column(db.Text)
-    # google_rating = db.Column(db.Integer)
     website = db.Column(db.String)
     address = db.Column(db.String)
     created_at = db.Column(db.DateTime)
     updated_at = db.Column(db.DateTime)
 
-    rating = db.relationship("Rating", back_populates="places")
-    favorite = db.relationship("Favorite", back_populates="places")
+    rating = db.relationship("Rating", back_populates="place")
+    favorite = db.relationship("Favorite", back_populates="place")
 
     def __repr__(self):
         """Show place info."""
@@ -49,15 +48,14 @@ class Rating(db.Model):
     __tablename__ = "ratings"
 
     rating_id = db.Column(db.Integer, autoincrement=True, primary_key=True)
-    comment = db.Column(db.Text)
     stars = db.Column(db.Integer)
     created_at = db.Column(db.DateTime)
     updated_at = db.Column(db.DateTime)
     user_id = db.Column(db.Integer, db.ForeignKey("users.user_id"))
     place_id = db.Column(db.Integer, db.ForeignKey("places.place_id"))
 
-    user = db.relationship("User", back_populates="ratings")
-    place = db.relationship("Place", back_populates="ratings")
+    user = db.relationship("User", back_populates="rating")
+    place = db.relationship("Place", back_populates="rating")
 
     def __repr__(self):
         """Show rating."""
@@ -73,8 +71,8 @@ class Favorite(db.Model):
     user_id = db.Column(db.Integer, db.ForeignKey("users.user_id"))
     place_id = db.Column(db.Integer, db.ForeignKey("places.place_id"))
 
-    user = db.relationship("User", back_populates="favorites")
-    place = db.relationship("Place", back_populates="favorites")
+    user = db.relationship("User", back_populates="favorite")
+    place = db.relationship("Place", back_populates="favorite")
 
     def __repr__(self):
         """Show favorite(s)."""
