@@ -63,6 +63,10 @@ def get_favorites():
     """Return all favorites"""
     return Favorite.query.all()
 
+# def get_favorite_by_user_id(user_id):
+#     """Return favorite by user id"""
+#     return Favorite.query.get(user_id)
+
 
 
 if __name__ == '__main__':
