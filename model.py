@@ -12,7 +12,7 @@ class User(db.Model):
     __tablename__ = "users"
 
     user_id = db.Column(db.Integer, autoincrement=True, primary_key=True)
-    user_name = db.Column(db.String(20))
+    password = db.Column(db.String(10))
     email = db.Column(db.String, unique=True)
     created_at = db.Column(db.DateTime)
     updated_at = db.Column(db.DateTime)
