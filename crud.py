@@ -2,9 +2,9 @@
 
 from model import db, User, Place, Rating, Favorite, connect_to_db
 
-def create_user(email, user_name):
+def create_user(email, password):
     """Create new user"""
-    user = User(email=email, user_name=user_name)
+    user = User(email=email, password=password)
     return user
 
 def get_users():
@@ -18,8 +18,6 @@ def get_user_by_id(user_id):
 def get_user_by_email(email):
     """Return user by email"""
     return User.query.filter(User.email == email).first()
-
-
 
 def create_place(name, description, website, address):
     """Create a place/generate place result"""
@@ -58,6 +56,11 @@ def create_favorite(user, place):
     """Add a place to favorite"""
     favorite = Favorite(user=user, place=place)
     return favorite
+
+def user_fav(user, place, fav):
+    """Return user's favorite place"""
+    favorited = Favorite(user=user, place=place, fav=fav)
+    return favorited
 
 def get_favorites():
     """Return all favorites"""

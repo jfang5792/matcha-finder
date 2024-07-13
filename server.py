@@ -21,17 +21,16 @@ def index():
 
 @app.route("/register", methods=["GET"])
 def register_user():
-    email = request.form.get("email")
-    password = request.form.get("password")
-    return render_template("register.html", email=email, password=password)
+    return render_template("register.html")
 
-@app.route("/created_user", methods=["POST"])
-def create_user():
+@app.route("/registered", methods=["POST"])
+def registered():
     """Register as new user"""
     email = request.form.get("email")
     password = request.form.get("password")
-
+    print("email is:", email)
     user = crud.get_user_by_email(email)
+    print("user is:", user)
     if user:
         flash("Account with that email already exists. Try logging in.")
     else:
@@ -41,15 +40,23 @@ def create_user():
         flash("Account successfully created. Please log in.")
     return redirect("/")
 
-# @app.route("/login", methods=["POST"])
-# def log_in():
-#     """Process user login."""
-#     email = request.form.get("email")
-#     user_name = request.form.get("user_name")
-
-#     user = crud.get_user_by_email(email)
-
+# @app.route("/login", methods=["GET"])
+# def login():
 #     return render_template("login.html")
+
+@app.route("/login", methods=["POST"])
+def login():
+    """Process user login."""
+    email = request.form.get("email")
+    password = request.form.get("password")
+
+    user = crud.get_user_by_email(email)
+    if not user or user.password != password:
+        flash("The email or password you entered was incorrect.")
+    else:
+        session["email"] = user.email
+        flash(f"Welcome back, {user.email}!")
+    return render_template("login.html", email=email, password=password)
 
 # @app.route("/favorites")
 #     return
