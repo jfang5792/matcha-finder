@@ -32,6 +32,11 @@
         </ul>
         </div>
     </nav>
+    <ul>
+        {% for message in get_flashed_messages() %}
+          <li>{{ message }}</li>
+        {% endfor %}
+    </ul>
     <!-- <img src="/frontend/static/img/mbgd.png"/> -->
 </div>
     {% endblock %}
