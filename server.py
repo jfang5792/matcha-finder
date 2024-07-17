@@ -1,14 +1,21 @@
 """Server for matcha finder app."""
 
-from flask import Flask, render_template, request, redirect, flash, session
+from flask import Flask, render_template, jsonify, request, redirect, flash, session
 from model import db, connect_to_db
 import crud as crud
 import jinja2
+
+import json
+import os
 
 app = Flask(__name__)
 app.secret_key = 'MATCHA_FINDER_TOKEN'
 
 app.jinja_env.undefined = jinja2.StrictUndefined
+
+def get_api_key():
+    pass
+
 
 @app.route("/")
 def index():
@@ -21,28 +28,28 @@ def index():
 
 @app.route("/register", methods=["GET"])
 def register_user():
+    """Create a new user account with email and password."""
     return render_template("register.html")
 
-@app.route("/registered", methods=["POST"])
+@app.route("/register", methods=["POST"])
 def registered():
     """Register as new user"""
     email = request.form.get("email")
     password = request.form.get("password")
-    print("email is:", email)
     user = crud.get_user_by_email(email)
-    print("user is:", user)
     if user:
         flash("Account with that email already exists. Try logging in.")
     else:
         user = crud.create_user(email, password)
         db.session.add(user)
         db.session.commit()
-        flash("Account successfully created. Please log in.")
+        flash("Account successfully created. Please log in now.")
     return redirect("/")
 
-# @app.route("/login", methods=["GET"])
-# def login():
-#     return render_template("login.html")
+@app.route("/login", methods=["GET"])
+def logging():
+    """Log in to account"""
+    return render_template("login.html")
 
 @app.route("/login", methods=["POST"])
 def login():
@@ -52,20 +59,38 @@ def login():
 
     user = crud.get_user_by_email(email)
     if not user or user.password != password:
-        flash("The email or password you entered was incorrect.")
+        flash("The email or password you entered was incorrect. Try again please.")
     else:
         session["email"] = user.email
         flash(f"Welcome back, {user.email}!")
     return render_template("login.html", email=email, password=password)
 
-# @app.route("/favorites")
-#     return
+@app.route("/favorites")
+def view_favorite():
+    """View favorites page"""
+    favorites = crud.get_favorites()
+    return render_template("favorite.html", favorites=favorites)
 
-@app.route("/users")
-def get_users():
-    """View all users."""
-    users = crud.get_users()
-    return render_template("users.html", users=users)
+# @app.route("/favorites", methods=["POST"])
+# def create_favorite():
+#     """Add a place to Favorites"""
+#     favorite = crud.create_favorite()
+#     return render_template("favorites.html", favorite=favorite)
+
+# @app.route("/search/<place_id>/favorite", methods=["POST"])
+# def create_fav():
+#     pass
+
+# @app.route("/users")
+# def get_users():
+#     """View all users."""
+#     users = crud.get_users()
+#     return render_template("users.html", users=users)
+
+@app.route("/results")
+def search():
+    """Show search results"""
+
 
 if __name__ == "__main__":
     connect_to_db(app)
