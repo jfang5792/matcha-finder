@@ -17,8 +17,8 @@
         <div class="collapse navbar-collapse" id="navbarMatcha">
         <i class="bi bi-cup-fill"></i>
         <a id="title"><b>Matcha Finder</b></a>
-        <form class="d-flex">
-            <input class="form-control me-2" type="search" placeholder="Type 'matcha in...'" aria-label="Search">
+        <form class="d-flex" id="search-bar-form">
+            <input class="form-control me-2" type="search" id="user-search-input" name="user-input" placeholder="Type 'matcha in...'" aria-label="Search">
             <button class="btn btn-outline-light" type="submit">Search</button>
         </form>
         <!-- <a class="btn btn-outline-light" href="#" role="button">Favorites</a> -->
@@ -39,8 +39,10 @@
     </ul>
     <!-- <img src="/frontend/static/img/mbgd.png"/> -->
 </div>
-    {% endblock %}
-    {% block after_body %}{% endblock %}
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+{% endblock %}
+{% block after_body %}
+<script src="/static/places.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+{% endblock %}
 </body>
 </html>
