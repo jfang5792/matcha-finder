@@ -87,10 +87,17 @@ def view_favorite():
 #     users = crud.get_users()
 #     return render_template("users.html", users=users)
 
-@app.route("/results")
+@app.route("/search")
 def search():
-    """Show search results"""
+    """Get user search input to search places in Google Places API"""
+    user_input = request.params.get("user-input")
+    return render_template("search.html", user_input=user_input)
 
+
+@app.route("/results")
+def get_results():
+    """Show search results"""
+    return render_template("result.html")
 
 if __name__ == "__main__":
     connect_to_db(app)
