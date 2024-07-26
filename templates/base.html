@@ -17,10 +17,13 @@
         <div class="collapse navbar-collapse" id="navbarMatcha">
         <i class="bi bi-cup-fill"></i>
         <a id="title"><b>Matcha Finder</b></a>
+
+
         <form class="d-flex" id="search-bar-form">
             <input class="form-control me-2" type="search" id="user-search-input" name="user-input" placeholder="Type 'matcha in...'" aria-label="Search">
-            <button class="btn btn-outline-light" type="submit">Search</button>
+            <button class="btn btn-outline-light"  type="submit" >Search</button>
         </form>
+
         <!-- <a class="btn btn-outline-light" href="#" role="button">Favorites</a> -->
         <ul class="nav justify-content-end">
             <li class="nav-item">
@@ -32,12 +35,19 @@
         </ul>
         </div>
     </nav>
+
+    <div class="container" id="main-container">
+        <div id="search-results">
+            <ul id="search-results-list"></ul>
+        </div>
+    </div>
+
     <ul>
         {% for message in get_flashed_messages() %}
           <li>{{ message }}</li>
         {% endfor %}
     </ul>
-    <img src="/static/img/mbgd.png"/>
+    <!-- <img src="/static/img/mbgd.png"/> -->
 </div>
 {% endblock %}
 {% block after_body %}
