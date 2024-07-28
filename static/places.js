@@ -11,10 +11,10 @@ const formSubmit = document.getElementById("search-bar-form").addEventListener("
   fetch(`https://maps.googleapis.com/maps/api/place/textsearch/json?query=${encodedSearchInput}&key={API_KEY}`)
     .then((res) => {return res.json()})
     .then((data) => {
-      console.log({data});
+    //   console.log({data});
       const resultNode = document.getElementById("search-results-list");
       const results = data.results;
-      console.log({results});
+    //   console.log({results});
 
       results.slice(0, 3).forEach(result => {
           const liElement= document.createElement("li");
@@ -26,11 +26,17 @@ const formSubmit = document.getElementById("search-bar-form").addEventListener("
           `;
           resultNode.appendChild(liElement);
       })
-
-    document.querySelector(".favorite-button").addEventListener("submit", (evt) => {
-
-    })
-
+    // fav button to render, add evt listener on that click for evt class, get evt target id,
+    // sending that evt target id back to server to save to that user's fav obj
+    for(let ele of document.querySelectorAll(".favorite-button")) {
+        ele.addEventListener("click", (evt) => {
+            fetch(`/api/favorite`, {
+                method: "POST",
+                body: JSON.stringify({place_id: evt.target.id}),
+                headers: {"Content-Type": "application/json"},
+            })
+        })
+    }
     })
     // .catch((error) => {console.log("No results found, try again")})
 })
