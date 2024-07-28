@@ -4,27 +4,24 @@ from flask import Flask, render_template, jsonify, request, redirect, flash, ses
 from model import db, connect_to_db
 import crud as crud
 import jinja2
+import requests
 
 import json
 import os
 
 app = Flask(__name__)
 app.secret_key = 'MATCHA_FINDER_TOKEN'
-
 app.jinja_env.undefined = jinja2.StrictUndefined
 
 def get_api_key():
     pass
 
+#---------------------------------------------------------------------#
 
 @app.route("/")
 def index():
     """View homepage."""
     return render_template("base.html")
-
-#homepage >> 1register account or 2login
-#1register >> email/pass buttons >> back to homepage to login
-#2login >> email/pass buttons >> to favorites page
 
 @app.route("/register", methods=["GET"])
 def register_user():
@@ -71,33 +68,21 @@ def view_favorite():
     favorites = crud.get_favorites()
     return render_template("favorite.html", favorites=favorites)
 
-# @app.route("/favorites", methods=["POST"])
-# def create_favorite():
-#     """Add a place to Favorites"""
-#     favorite = crud.create_favorite()
-#     return render_template("favorites.html", favorite=favorite)
+@app.route("/api/favorite", methods=["POST"])
+def create_favorite():
+    """Add a place to Favorites"""
+    email = session["email"]
+    user = crud.get_user_by_email(email)
+    print("USER IS HERE:", user)
+    # place = crud.create_place(name, description, website, address)
+    place_id = request.json.get("place_id")
+    print("PLACE ID IS THIS:", place_id)
+    res = requests.get('https://maps.googleapis.com/maps/api/place/details/json?place_id={place_id}&key={API_KEY}')
+    # name =
+    # favorite = crud.create_favorite(user, place)
+    print("YOOHOOOOOOOOOOOOO:", res)
+    return {"Status": "Ok"}
 
-# @app.route("/search/<place_id>/favorite", methods=["POST"])
-# def create_fav():
-#     pass
-
-# @app.route("/users")
-# def get_users():
-#     """View all users."""
-#     users = crud.get_users()
-#     return render_template("users.html", users=users)
-
-@app.route("/search")
-def search():
-    """Get user search input to search places in Google Places API"""
-    user_input = request.params.get("user-input")
-    return render_template("search.html", user_input=user_input)
-
-
-@app.route("/results")
-def get_results():
-    """Show search results"""
-    return render_template("result.html")
 
 if __name__ == "__main__":
     connect_to_db(app)
