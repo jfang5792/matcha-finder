@@ -73,15 +73,25 @@ def create_favorite():
     """Add a place to Favorites"""
     email = session["email"]
     user = crud.get_user_by_email(email)
-    print("USER IS HERE:", user)
-    # place = crud.create_place(name, description, website, address)
+    print("user crud.get_user_by_email:", user) #<User user_id=3 email=jenny@gmail>
     place_id = request.json.get("place_id")
-    print("PLACE ID IS THIS:", place_id)
-    res = requests.get('https://maps.googleapis.com/maps/api/place/details/json?place_id={place_id}&key={API_KEY}')
-    # name =
-    # favorite = crud.create_favorite(user, place)
-    print("YOOHOOOOOOOOOOOOO:", res)
-    return {"Status": "Ok"}
+    print("place_id from req.json.get:", place_id) #ChIJX57b5vWHhYARRNKgLz2GwFc
+
+    response = requests.get(f'https://maps.googleapis.com/maps/api/place/details/json?place_id={place_id}&key={API_KEY}')
+    from pprint import pprint
+    # print("result")
+    #pprint(response.json()['result'])
+    data = response.json()['result']
+    name = data["name"]
+    addy = data["formatted_address"]
+    desc = data["editorial_summary"]
+    website = data["website"]
+
+    place = crud.create_place(name, desc, website, addy)
+
+    favorite = crud.create_favorite(user, place)
+
+    return jsonify({"Status": "Ok"})
 
 
 if __name__ == "__main__":
