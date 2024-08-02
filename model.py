@@ -31,6 +31,7 @@ class Place(db.Model):
     place_id = db.Column(db.Integer, autoincrement=True, primary_key=True)
     name = db.Column(db.String)
     description = db.Column(db.Text)
+    external_id = db.Column(db.Text)
     website = db.Column(db.String)
     address = db.Column(db.String)
     created_at = db.Column(db.DateTime)
