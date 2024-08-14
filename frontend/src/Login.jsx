@@ -1,22 +1,18 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap-icons/font/bootstrap-icons.css';
 
-// import {
-//     Link,
-//     redirect,
-//     useNavigate,
-//     useParams
-//   } from "react-router-dom";
-
 export default function Login() {
-    const [email, setEmail] = useState("")
-    const [password, setPassword] = useState("")
-    const [message, setMessage] = useState("")
+    const [email, setEmail] = useState("");
+    const [password, setPassword] = useState("");
+    const [message, setMessage] = useState("");
+    const [errorMessage, setErrorMessage] = useState("");
+
     const navigate = useNavigate();
     const handleLogin = (evt) => {
         evt.preventDefault()
+        console.log("Login data:", email, password)
         fetch(`/api/login`, {
             method: "POST",
             body: JSON.stringify({
@@ -28,10 +24,11 @@ export default function Login() {
         .then((res) => {return res.json()})
         .then((data) => {
             console.log("DATA:", data)
-            setMessage(data.msg)
+            // setMessage(data.msg)
             if(data.status === "Ok") {
                 navigate('/favorites');
             }
+            setMessage(data.msg)
         })
     }
     return (
