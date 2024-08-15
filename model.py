@@ -1,4 +1,4 @@
-"""Models for matcha finder app."""
+"""Data Models for Matcha Finder app."""
 
 from flask_sqlalchemy import SQLAlchemy
 # from flask_login import LoginManager
@@ -7,13 +7,14 @@ from flask_sqlalchemy import SQLAlchemy
 
 db = SQLAlchemy()
 
+#------------------------------------------------------------------------#
 class User(db.Model):
     """A User."""
     __tablename__ = "users"
 
     user_id = db.Column(db.Integer, autoincrement=True, primary_key=True)
-    password = db.Column(db.String(10))
-    email = db.Column(db.String, unique=True)
+    password = db.Column(db.String(10), nullable=False)
+    email = db.Column(db.String, unique=True, nullable=False)
     created_at = db.Column(db.DateTime)
     updated_at = db.Column(db.DateTime)
 
@@ -24,6 +25,7 @@ class User(db.Model):
         """Show user info."""
         return f"<User user_id={self.user_id} email={self.email}>"
 
+#------------------------------------------------------------------------#
 class Place(db.Model):
     """A Place."""
     __tablename__ = "places"
@@ -44,6 +46,7 @@ class Place(db.Model):
         """Show place info."""
         return f"<Place place_id={self.place_id} name={self.name}>"
 
+#------------------------------------------------------------------------#
 class Rating(db.Model):
     """A Rating."""
     __tablename__ = "ratings"
@@ -62,6 +65,7 @@ class Rating(db.Model):
         """Show rating."""
         return f"<Rating rating_id={self.rating_id} stars={self.stars}>"
 
+#------------------------------------------------------------------------#
 class Favorite(db.Model):
     """A Favorite place."""
     __tablename__ = "favorites"
@@ -79,6 +83,7 @@ class Favorite(db.Model):
         """Show favorite(s)."""
         return f"<Favorite favorite_id={self.favorite_id}>"
 
+#------------------------------------------------------------------------#
 def connect_to_db(app):
     app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql:///matcha'
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
@@ -86,9 +91,9 @@ def connect_to_db(app):
 
     db.app = app
     db.init_app(app)
+
     print("Connected to the db!")
 
 if __name__ == "__main__":
     from server import app
-
     connect_to_db(app)
