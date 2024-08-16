@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { useNavigate } from 'react-router-dom';
 import Nav from 'react-bootstrap/Nav';
 // import './App.css'
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -26,7 +27,7 @@ import {
   Outlet,
   Route,
   Routes,
-  useParams
+  useParams,
 } from "react-router-dom";
 
 
@@ -35,21 +36,16 @@ function App() {
 
   return (
     <>
-      <Navigationbar> </Navigationbar>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-      </div>
+      <NavigationBar> </NavigationBar>
 
       <Routes>
+      <Route path="/favorites" element={<Favorites/>}/><Route/>
+      <Route path="/login" element={<Login/>}/><Route/>
+      <Route path="/register" element={<Register/>}/><Route/>
+      <Route path="/search" element={<Search/>}/><Route/>
+      <Route path="/user" element={<User/>}/><Route/>
+      <Route path="/places" element={<Places/>}/><Route/>
       <Route path="/" element={<Welcome/>}/><Route/>
-      <Route path="Login" element={<Login/>}/><Route/>
-      <Route path="Register" element={<Register/>}/><Route/>
-      <Route path="Search" element={<Search/>}/><Route/>
-      <Route path="User" element={<User/>}/><Route/>
-      <Route path="Places" element={<Places/>}/><Route/>
-      <Route path="Favorites" element={<Favorites/>}/><Route/>
       </Routes>
 
     </>
@@ -64,11 +60,19 @@ function Welcome() {
   )
 }
 
-function Navigationbar() {
+
+function NavigationBar() {
+  const [searchInput, setSearchInput] = useState('');
+  // const [places]
+  const navigate = useNavigate();
+
+  const handleOnClick = () => {
+        navigate('/places', {state: {searchInput}});
+  }
   return (
     <Nav
       // expand="true" fixed="top"
-      // expand="true" fixed="bg-body-tertiary"
+      // expand="true" fixed="bg-body- tertiary"
       expand="lg" fixed="bg-body-tertiary"
       // expand="lg" className="bg-body-tertiary"
 
@@ -91,30 +95,32 @@ function Navigationbar() {
               type="text"
               placeholder="type 'matcha' + location"
               className=" mr-sm-2"
+              onChange={(evt => setSearchInput(evt.target.value))}
+              value={searchInput}
             />
           </Col>
           <Col xs="auto">
-            <Button type="submit">Search</Button>
+            <Button onClick={handleOnClick} type="submit">Search</Button>
           </Col>
         </Row>
       {/* </Form> */}
 
       <Nav.Item>
         <Link to="/register">Create Account</Link>
-
       </Nav.Item>
 
       <Nav.Item>
         <Link to="/login">Login</Link>
       </Nav.Item>
 
-      <div>
+      <Nav.Item>
         <Link to="/">Home</Link>
-      </div>
+      </Nav.Item>
 
       <Nav.Item>
-
+        <Link to="/favorites">Favorites</Link>
       </Nav.Item>
+
       </Container>
     </Navbar>
     </Nav>
