@@ -19,6 +19,10 @@ def get_user_by_id(user_id):
     """Return a user by primary key."""
     return User.query.get(user_id)
 
+def get_user_by_email(email):
+    """Return user by email"""
+    return User.query.filter(User.email == email).first()
+
 def delete_user_by_email(email):
     """Delete user from database by email"""
     user = User.query.get(email)
@@ -111,6 +115,9 @@ def get_favorite_by_user_id(user_id):
     """Return favorite by user id"""
     return Favorite.query.get(user_id)
 
+def get_favs():
+    """"Return all favorite places"""
+    return Favorite.query.all()
 
 # def delete_place_from_favorites(user_id, favorite_id):
 #     """Delete a favorite place."""
