@@ -98,7 +98,7 @@ def create_favorite():
     #print("place_id from req.json.get:", place_id) #ChIJX57b5vWHhYARRNKgLz2GwFc
 
     # This is using the google_place_id to query google place details API for place information
-    response = requests.get(f'https://maps.googleapis.com/maps/api/place/details/json?place_id={google_place_id}&key=AIzaSyCakkp8f2g5TIqQyxyi5JXiWmJsJWX0qCo')
+    response = requests.get(f'https://maps.googleapis.com/maps/api/place/details/json?place_id={google_place_id}&key={api_key}')
     # from pprint import pprint
     # print("result")
     # pprint(response.json()['result'])
