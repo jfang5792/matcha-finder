@@ -1,4 +1,4 @@
-"""Server for matcha finder app."""
+"""Server for Matcha Finder app."""
 
 from flask import Flask, render_template, jsonify, request, redirect, flash, session
 from model import db, connect_to_db
@@ -28,72 +28,108 @@ def register_user():
     """Create a new user account with email and password."""
     return render_template("register.html")
 
-@app.route("/register", methods=["POST"])
-def registered():
+@app.route("/api/register", methods=["POST"])
+def api_register():
     """Register as new user"""
-    email = request.form.get("email")
-    password = request.form.get("password")
+    email = request.json.get("email")
+    password = request.json.get("password")
     user = crud.get_user_by_email(email)
+    print("USER SAVED:", user)
+    print("EMAIL SAVED:", email)
+    print("PW SAVED:", password)
     if user:
-        flash("Account with that email already exists. Try logging in.")
+        msg = f"Account with that email already exists. Please log in."
+        status = "Error"
     else:
         user = crud.create_user(email, password)
         db.session.add(user)
         db.session.commit()
-        flash("Account successfully created. Please log in now.")
-    return redirect("/")
+        # session["user"] = user.user_id
+        msg = f"Account successfully created."
+        status = "Ok"
+    return jsonify({"msg": msg, "status": status})
 
-@app.route("/login", methods=["GET"])
-def logging():
-    """Log in to account"""
-    return render_template("login.html")
-
-@app.route("/login", methods=["POST"])
-def login():
+@app.route("/api/login", methods=["POST"])
+def api_login():
     """Process user login."""
-    email = request.form.get("email")
-    password = request.form.get("password")
-
+    email = request.json.get("email")
+    password = request.json.get("password")
     user = crud.get_user_by_email(email)
     if not user or user.password != password:
-        flash("The email or password you entered was incorrect. Try again please.")
+        msg = "The email or password you entered was incorrect. Try again please or create an account."
+        status = "Error"
     else:
         session["email"] = user.email
-        flash(f"Welcome back, {user.email}!")
-    return render_template("login.html", email=email, password=password)
+        msg = f"Welcome back, {user.email}!"
+        status = "Ok"
+    return jsonify({"msg": msg, "status": status})
 
-@app.route("/favorites")
-def view_favorite():
-    """View favorites page"""
-    favorites = crud.get_favorites()
-    return render_template("favorite.html", favorites=favorites)
+# helper function:
+def if_user_in_session():
+    return "email" in session and session["email"]
 
-@app.route("/api/favorite", methods=["POST"])
-def create_favorite():
-    """Add a place to Favorites"""
-    email = session["email"]
+
+#get endpoint for list of favorites
+@app.route("/api/favorites")
+def view_favs():
+    """View list of favorites"""
+    email = session.get("email")
     user = crud.get_user_by_email(email)
-    print("user crud.get_user_by_email:", user) #<User user_id=3 email=jenny@gmail>
-    place_id = request.json.get("place_id")
-    print("place_id from req.json.get:", place_id) #ChIJX57b5vWHhYARRNKgLz2GwFc
+    myfavs = crud.get_favs()
+    favList = []
+    for fav in myfavs:
+        favList.append({"name": fav.place.name, "formatted_address": fav.place.address, "description": fav.place.description, "place_id": fav.place.place_id})
+    print("favList:", favList)
+    return jsonify(favList)
 
-    response = requests.get(f'https://maps.googleapis.com/maps/api/place/details/json?place_id={place_id}&key={API_KEY}')
-    from pprint import pprint
+
+@app.route("/api/favorites", methods=["POST"])
+def create_favorite():
+    """Create a new favorite place"""
+    email = session.get("email")
+    #user = crud.get_user_by_email(email)
+
+    if not email:
+        flash(f"Must create account or login to add to favorites")
+        return redirect("/")
+    # This line below is getting data from the frontend
+    google_place_id = request.json.get("place_id")
+    #print("user crud.get_user_by_email:", user) #<User user_id=3 email=jenny@gmail>
+    #print("place_id from req.json.get:", place_id) #ChIJX57b5vWHhYARRNKgLz2GwFc
+
+    # This is using the google_place_id to query google place details API for place information
+    response = requests.get(f'https://maps.googleapis.com/maps/api/place/details/json?place_id={google_place_id}&key=AIzaSyCakkp8f2g5TIqQyxyi5JXiWmJsJWX0qCo')
+    # from pprint import pprint
     # print("result")
-    #pprint(response.json()['result'])
+    # pprint(response.json()['result'])
+
+    # This is parsing response data that's returned from the place details API
     data = response.json()['result']
     name = data["name"]
-    addy = data["formatted_address"]
-    desc = data["editorial_summary"]
-    website = data["website"]
+    print(name)
+    address = data["formatted_address"]
+    website = data.get("website")
+    description = None
+    if data.get("editorial_summary"):
+        description = data.get("editorial_summary").get("overview")
+    print("address:", address)
+    print("website:", website)
+    print("description:", description)
 
-    place = crud.create_place(name, desc, website, addy)
+    # Get or create the place I want to store in my db
+    place = crud.create_place(name=name, description=description, website=website, address=address, external_id=google_place_id)
+    db.session.add(place)
+    db.session.commit()
+    # Creating the user favorite place
 
-    favorite = crud.create_favorite(user, place)
-
+    user = crud.get_user_by_email(email)
+    favorite = crud.create_favorite(user=user, place=place)
+    print("favorite is:", favorite)
+    db.session.add(favorite)
+    db.session.commit()
     return jsonify({"Status": "Ok"})
 
 
 if __name__ == "__main__":
     connect_to_db(app)
-    app.run(host="0.0.0.0", debug=True, port=7770)
+    app.run(host="0.0.0.0", debug=True, port=6060)
