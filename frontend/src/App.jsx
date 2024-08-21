@@ -20,7 +20,6 @@ import Col from 'react-bootstrap/Col';
 
 import Login from './Login';
 import Register from './Register';
-import User from './User';
 import Places from './Places';
 import Favorites from './Favorites';
 
@@ -35,16 +34,16 @@ import {
 
 function App() {
   const [count, setCount] = useState(0)
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   return (
     <>
-      <NavigationBar> </NavigationBar>
+      <NavigationBar isLoggedIn={isLoggedIn} setLoggedOut={() => setIsLoggedIn(false)}> </NavigationBar>
 
       <Routes>
       <Route path="/favorites" element={<Favorites/>}/><Route/>
-      <Route path="/login" element={<Login/>}/><Route/>
+      <Route path="/login" element={<Login toggleLoginCallback={setIsLoggedIn}/>}/><Route/>
       <Route path="/register" element={<Register/>}/><Route/>
-      <Route path="/user" element={<User/>}/><Route/>
       <Route path="/places" element={<Places/>}/><Route/>
       <Route path="/" element={<Welcome/>}/><Route/>
       </Routes>
@@ -65,13 +64,30 @@ function Welcome() {
 }
 
 
-function NavigationBar() {
+function NavigationBar(props) {
   const [searchInput, setSearchInput] = useState('');
   const navigate = useNavigate();
 
   const handleOnClick = () => {
-        navigate('/places', {state: {searchInput}});
+    navigate('/places', {state: {searchInput}});
   }
+
+  const handleRegistration = () => {
+    navigate('/register')
+  }
+
+  const handleLogin = () => {
+    if(props.isLoggedIn) {
+      fetch(`/api/logout`, {
+        method: "POST",
+      })
+      .then(() => props.setLoggedOut())
+      .then(() => navigate('/login'))
+    } else {
+      navigate('/login')
+    }
+  }
+
   return (
     <Nav
       style={{"backgroundColor": "#65e28f", "width": "100%"}}
@@ -82,10 +98,9 @@ function NavigationBar() {
 
     >
     {/* <Navbar expand="lg" className="bg-body-tertiary"> */}
-    {/* <Card> */}
     <Navbar className="navbar navbar-expand-lg navbar-light navbar-fixed-top">
       <Container fluid>
-      <Navbar.Brand href="/">Matcha Finder  <i className="bi bi-house"></i></Navbar.Brand>
+      <Navbar.Brand href="/"><i className="bi bi-house-fill">  </i>MATCHA FINDER  </Navbar.Brand>
 
         <Row>
           <Col xs="auto">
@@ -98,26 +113,24 @@ function NavigationBar() {
             />
           </Col>
           <Col xs="auto">
-            <Button onClick={handleOnClick} type="submit">Search</Button>
+            <Button onClick={handleOnClick} type="submit">SEARCH <i className="bi bi-search"></i> </Button>
           </Col>
         </Row>
 
-        <Nav.Item>
-          <Link to="/register">Create Account</Link>
+        <Nav.Item className="mx-1">
+          <Button onClick={handleRegistration} type="submit">REGISTER </Button>
+        </Nav.Item>
+
+        <Nav.Item className="mx-1">
+        <Button onClick={handleLogin} type="submit">{props.isLoggedIn ? 'LOGOUT': 'LOGIN'}</Button>
         </Nav.Item>
 
         <Nav.Item>
-          <Link to="/login">Login</Link>
+          <Link to="/favorites"><i className="bi bi-suit-heart-fill"></i> </Link>
         </Nav.Item>
 
-        <Nav.Item>
-          <Link to="/favorites">Favorites <i className="bi bi-suit-heart"></i> </Link>
-        </Nav.Item>
-
-      {/* </Navbar.Brand> */}
       </Container>
     </Navbar>
-    {/* </Card> */}
   </Nav>
   );
 }
