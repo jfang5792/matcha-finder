@@ -8,8 +8,7 @@ export default function MatchaList({data, addPlacesFavButton}) {
                 {listItem.name}
                 <div>{listItem.formatted_address}</div>
                 <div>{listItem.description}</div>
-                { addPlacesFavButton && <FavoritesButton /> }
-                {/* <FavoritesButton placeId={ listItem.place_id }/> */}
+                {addPlacesFavButton && <FavoritesButton placeId={ listItem.place_id }/>}
             </li>
         )
     })
