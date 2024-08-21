@@ -1,9 +1,8 @@
 """Server for Matcha Finder app."""
 
-from flask import Flask, render_template, jsonify, request, redirect, flash, session
+from flask import Flask, jsonify, request, redirect, flash, session
 from model import db, connect_to_db
 import crud as crud
-import jinja2
 import requests
 
 import json
@@ -11,22 +10,15 @@ import os
 
 app = Flask(__name__)
 app.secret_key = 'MATCHA_FINDER_TOKEN'
-app.jinja_env.undefined = jinja2.StrictUndefined
+
+# app.api_key = os.environ.get("API_KEY")
+# app.api_url = 'https://maps.googleapis.com/maps/api/place/textsearch/'
+# response = requests.get('https://maps.googleapis.com/maps/api/place/textsearch/', headers={"Authorization": f"Bearer {api_key}"})
 
 def get_api_key():
     pass
 
 #---------------------------------------------------------------------#
-
-@app.route("/")
-def index():
-    """View homepage."""
-    return render_template("base.html")
-
-@app.route("/register", methods=["GET"])
-def register_user():
-    """Create a new user account with email and password."""
-    return render_template("register.html")
 
 @app.route("/api/register", methods=["POST"])
 def api_register():
@@ -34,6 +26,7 @@ def api_register():
     email = request.json.get("email")
     password = request.json.get("password")
     user = crud.get_user_by_email(email)
+
     print("USER SAVED:", user)
     print("EMAIL SAVED:", email)
     print("PW SAVED:", password)
@@ -44,10 +37,10 @@ def api_register():
         user = crud.create_user(email, password)
         db.session.add(user)
         db.session.commit()
-        # session["user"] = user.user_id
+        session["user"] = user.user_id #"user": user.user_id
         msg = f"Account successfully created."
         status = "Ok"
-    return jsonify({"msg": msg, "status": status})
+    return jsonify({"msg": msg, "status": status, "user_id": user.user_id})
 
 @app.route("/api/login", methods=["POST"])
 def api_login():
@@ -68,6 +61,14 @@ def api_login():
 def if_user_in_session():
     return "email" in session and session["email"]
 
+@app.route("/api/logout", methods=["POST"])
+def logout():
+    """Log out by clearing user session data"""
+    session.clear()
+    return jsonify({"msg": "Logged out successfully", "status": 200})
+
+
+#------------------------------------------------------------------------#
 
 #get endpoint for list of favorites
 @app.route("/api/favorites")
@@ -98,13 +99,14 @@ def create_favorite():
     #print("place_id from req.json.get:", place_id) #ChIJX57b5vWHhYARRNKgLz2GwFc
 
     # This is using the google_place_id to query google place details API for place information
-    response = requests.get(f'https://maps.googleapis.com/maps/api/place/details/json?place_id={google_place_id}&key={api_key}')
+    response = requests.get(f'https://maps.googleapis.com/maps/api/place/details/json?place_id={google_place_id}&key=API_KEY')
     # from pprint import pprint
     # print("result")
     # pprint(response.json()['result'])
 
     # This is parsing response data that's returned from the place details API
     data = response.json()['result']
+    print("DATA ERROR HERE:", data)
     name = data["name"]
     print(name)
     address = data["formatted_address"]
@@ -129,6 +131,8 @@ def create_favorite():
     db.session.commit()
     return jsonify({"Status": "Ok"})
 
+
+#------------------------------------------------------------------------#
 
 if __name__ == "__main__":
     connect_to_db(app)
