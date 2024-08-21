@@ -1,5 +1,5 @@
-import Button from 'react-bootstrap/Button';
 import { useState} from 'react';
+import Button from 'react-bootstrap/Button';
 
 export default function FavoritesButton({placeId}) {
     //handle single button behavior
@@ -21,8 +21,8 @@ export default function FavoritesButton({placeId}) {
         })
     }
 
-    if(isSuccessful) {
-        return "Added!"
+    if (isSuccessful) {
+        return <Button>Added!</Button>
     }
     return <Button onClick={handleOnClick} type="submit">Add to Favorites</Button>
 }
