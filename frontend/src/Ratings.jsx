@@ -3,7 +3,7 @@ import Button from 'react-bootstrap/Button';
 import 'bootstrap-icons/font/bootstrap-icons.css';
 
 export default function RatingStar({placeId}) {
-    const [isRatingStar, setRatingStar] = useState(false)
+    const [ratedStar, setRatedStar] = useState(false)
 
     const handleStarOnClick = (evt) => {
         fetch(`/api/favorites`, {
@@ -20,35 +20,9 @@ export default function RatingStar({placeId}) {
         })
     }
 
-    if (!isRatingStar) {
-        return <Button> RATE <i className="bi bi-star"></i></Button>
-        }
-
-    return (
-            <div>
-                <Button onClick={handleStarOnClick} type="submit"><i className="bi bi-star-fill"></i></Button>
-            </div>
-        )
-    }
-
-    // return (
-    //     <div>
-    //         <Button onClick={handleStarOnClick} type="submit"><i className="bi bi-star-fill"></i></Button>
-    //     </div>
-    // )
-    // const handleRating = (evt) => {
-    //     fetch(`/api/favorites`, {
-    //         body: JSON.stringify({
-    //             email: email,
-    //             password: password,
-    //         }),
-    //         headers: {"Content-Type": "application/json"},
-    //     })
-    //     .then((res) => {return res.json()})
-    //     .then((data) => {
-    //         // isRated(true)
-    //     })
-    // }
+    return ratedStar ? <Button onClick={() => {setRatedStar(false)}} className="ratingBtn" > RATED <i className="bi bi-star-fill"></i></Button> :
+     <Button className="ratingBtn-clicked" onClick={() => {setRatedStar(true)}}> RATE <i className="bi bi-star"></i></Button>;
+}
 
     // if(isRated) {
     //     return (
