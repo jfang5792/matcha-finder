@@ -1,10 +1,8 @@
 import { useState, useEffect} from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import MatchaList from './MatchaList';
-import FavoritesButton from './FavoritesButton';
-import ViewFavoritesPage from './Favorites';
 
-export default function Places() {
+export default function Places(props) {
     const location = useLocation();
     const [results, setResults] = useState([]);
     const [searchInput, setSearchInput] = useState("");
@@ -14,7 +12,6 @@ export default function Places() {
             }
         }, [location])
         // console.log("LOCATION STATE:", location.state)
-    // console.log({searchInput});
 
     useEffect(() => {
         if(searchInput === "") {
@@ -27,10 +24,17 @@ export default function Places() {
             return res.json()
         })
         .then((data) => {
-            // Get first 3 results
-            console.log("DATA:", data)
             const placeResults = data.results.slice(0, 3);
-            // console.log(placeResults)
+
+            placeResults.forEach(place => {
+                const google_place_id = place.place_id
+                fetch(`https://maps.googleapis.com/maps/api/place/details/json?place_id=${google_place_id}&key=API_KEY`)
+                .then((res) => {
+                    return res.json();
+                }).then((data => {
+                    place.description = data.result?.editorial_summary?.overview;
+                }));
+            });
             setResults(placeResults)
         })
     }, [searchInput])
