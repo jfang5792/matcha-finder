@@ -22,7 +22,7 @@ export default function FavoritesButton({placeId}) {
     }
 
     if (isSuccessful) {
-        return <Button>Added!</Button>
+        return <Button className="favBtn-clicked"><i className="bi bi-suit-heart-fill"></i> Added!</Button>
     }
-    return <Button onClick={handleOnClick} type="submit">Add to Favorites</Button>
+    return <Button onClick={handleOnClick} className="fav-btn" type="submit"><i className="bi bi-suit-heart"></i> Add to Favorites</Button>
 }
