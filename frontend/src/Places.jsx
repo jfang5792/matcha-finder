@@ -6,6 +6,7 @@ export default function Places(props) {
     const location = useLocation();
     const [results, setResults] = useState([]);
     const [searchInput, setSearchInput] = useState("");
+
     useEffect(() => {
         if(location.state.searchInput !== undefined) {
             setSearchInput(location.state.searchInput)
@@ -14,30 +15,55 @@ export default function Places(props) {
         // console.log("LOCATION STATE:", location.state)
 
     useEffect(() => {
+        // check for user input in search bar, if not exit function
         if(searchInput === "") {
             return
         }
+        // encodes user input in api key
         const encodedSearchInput = encodeURI(searchInput);
-        // Make API call
-        fetch(`https://maps.googleapis.com/maps/api/place/textsearch/json?query=${encodedSearchInput}&key=API_KEY`)
+        // make Google Places Text Search API call using encoded user input
+        const textSearchPromise = fetch(`https://maps.googleapis.com/maps/api/place/textsearch/json?query=${encodedSearchInput}&key=API_KEY`)
         .then((res) => {
             return res.json()
         })
-        .then((data) => {
-            const placeResults = data.results.slice(0, 3);
-
-            placeResults.forEach(place => {
-                const google_place_id = place.place_id
-                fetch(`https://maps.googleapis.com/maps/api/place/details/json?place_id=${google_place_id}&key=API_KEY`)
+        const places = [];
+        textSearchPromise.then(data => {
+            places.push(...data.results.slice(0, 3))
+            // create new array of promises, each with fetch req fetching more details about places with their place_id
+            const placeDetailsPromises = places.map(place => {
+                const google_place_id = place.place_id;
+                // make API call for text summary via place_id
+                return fetch(`https://maps.googleapis.com/maps/api/place/details/json?place_id=${google_place_id}&key=API_KEY`)
                 .then((res) => {
                     return res.json();
                 }).then((data => {
                     place.description = data.result?.editorial_summary?.overview;
                 }));
             });
-            setResults(placeResults)
+            // Promise.all() waits for all fetches to complete before returning, update setResults state
+            Promise.all(placeDetailsPromises)
+            .then(() => {
+                setResults(places);
+            })
         })
     }, [searchInput])
+
+
+    //         const placeResults = data.results.slice(0, 3);
+    //         placeResults.forEach(place => {
+    //             const google_place_id = place.place_id
+    //             // Make API call for text summary via place_id
+    //             fetch(`https://maps.googleapis.com/maps/api/place/details/json?place_id=${google_place_id}&key=AIzaSyCakkp8f2g5TIqQyxyi5JXiWmJsJWX0qCo`)
+    //             .then((res) => {
+    //                 return res.json();
+    //             }).then((data => {
+    //                 place.description = data.result?.editorial_summary?.overview;
+    //             }));
+    //         });
+    //         //
+    //         setResults(placeResults)
+    //     })
+    // }, [searchInput])
 
     return (
         <div>
@@ -45,6 +71,7 @@ export default function Places(props) {
         </div>
     )
 }
+
 
 // import Card from 'react-bootstrap/Card';
 // import { CardBody } from 'react-bootstrap';
