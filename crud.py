@@ -111,6 +111,11 @@ def create_favorite(user, place):
         )
     return favorite
 
+def get_user_favs(user):
+    """Return favorites by user"""
+    user_favorite = Favorite.query.filter_by(user=user).all()
+    return user_favorite
+
 def get_favorite_by_user_id(user_id):
     """Return favorite by user id"""
     return Favorite.query.get(user_id)
