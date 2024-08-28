@@ -1,8 +1,64 @@
 /* Styling for Matcha Finder */
+
+.login-body {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  padding: 30px;
+}
+
+.loginCard {
+  height: 30vh;
+  width: 100%;
+  object-fit: contain;
+  vertical-align: middle;
+}
+
+.loginAccount {
+  color: whitesmoke;
+  font-family: monospace;
+  background: linear-gradient(115deg, #aff7a0, #ea9d7e);
+  box-shadow: rgba(0, 0, 0, 0.4) 0px 2px 4px, rgba(0, 0, 0, 0.3) 0px 7px 13px -3px, rgba(0, 0, 0, 0.2) 0px -3px 0px inset;
+}
+
+.cardName.card {
+  background: linear-gradient(115deg, #fdfcfb, #e2d1c3);
+  /* background: linear-gradient(115deg, #a07361, #eed7b2); */
+}
+
+.card-img-top {
+  height: 30vh;
+  width: 100%;
+  object-fit: contain;
+  vertical-align: middle;
+}
+
+.registerItems {
+  justify-content: center;
+  display: grid;
+}
+
+.card {
+  display: table-cell;
+  flex-wrap: wrap;
+  justify-content: stretch;
+  align-items: stretch;
+  margin: 2em;
+  padding: 2em;
+}
+
 .navbar-banner {
   height: 30vh;
   width: 100%;
   object-fit: contain;
+}
+
+.phraseCard {
+  height: 40vh;
+  width: 100%;
+  object-fit: contain;
+  float: left;
 }
 
 .container-fluid {
@@ -15,6 +71,95 @@ button.btn.btn-primary {
   color: darkgreen;
   border: outset;
 }
+
+button.fav-btn.btn.btn-primary {
+  background: linear-gradient(115deg, #48bc84, #d0e496);
+  box-shadow: rgba(50, 50, 93, 0.25) 0px 50px 100px -20px, rgba(0, 0, 0, 0.3) 0px 30px 60px -30px, rgba(10, 37, 64, 0.35) 0px -2px 6px 0px inset;
+}
+
+button.favBtn-clicked.btn.btn-primary {
+  background: linear-gradient(115deg, #89cc87, #e7dac2);
+  box-shadow: rgba(50, 50, 93, 0.25) 0px 50px 100px -20px, rgba(0, 0, 0, 0.3) 0px 30px 60px -30px, rgba(10, 37, 64, 0.35) 0px -2px 6px 0px inset;
+  opacity: 0.5;
+  transform: scale(1);
+}
+
+button.ratingBtn-clicked.btn.btn-primary {
+  background: linear-gradient(115deg, #48bc84, #d0e496);
+  font-weight: bold;
+  box-shadow: rgba(50, 50, 93, 0.25) 0px 50px 100px -20px, rgba(0, 0, 0, 0.3) 0px 30px 60px -30px, rgba(10, 37, 64, 0.35) 0px -2px 6px 0px inset;
+}
+
+button.badRatingBtn-clicked.btn.btn-primary {
+  color: whitesmoke;
+  font-weight: bold;
+  background: linear-gradient(115deg, #f3f1ec, #e41b22);
+  box-shadow: rgba(50, 50, 93, 0.25) 0px 50px 100px -20px, rgba(0, 0, 0, 0.3) 0px 30px 60px -30px, rgba(10, 37, 64, 0.35) 0px -2px 6px 0px inset;
+}
+
+button.ratingBtn.btn.btn-primary {
+  background: linear-gradient(115deg, #48bc84, #d0e496);
+  box-shadow: rgba(50, 50, 93, 0.25) 0px 50px 100px -20px, rgba(0, 0, 0, 0.3) 0px 30px 60px -30px, rgba(10, 37, 64, 0.35) 0px -2px 6px 0px inset;
+  opacity: 0.5;
+  font-weight: bold;
+  transform: scale(1);
+}
+
+
+.regBtn {
+  color: whitesmoke;
+  border: none;
+  background: linear-gradient(115deg, #48bc84, #d0e496);
+  font-weight: bold;
+  box-shadow: rgba(50, 50, 93, 0.25) 0px 50px 100px -20px, rgba(0, 0, 0, 0.3) 0px 30px 60px -30px, rgba(10, 37, 64, 0.35) 0px -2px 6px 0px inset;
+}
+
+.registerForm {
+  margin-bottom: 20px;
+  display: flex;
+}
+
+.createAccount {
+  color:#c7522a;
+}
+
+/* .regForm {
+  display: flex;
+  align-items: center;
+  margin-right: 10px;
+} */
+
+
+.regBtn {
+  color: whitesmoke;
+  background: linear-gradient(115deg, #48bc84, #d0e496);
+  border: transparent;
+  box-shadow: rgba(50, 50, 93, 0.25) 0px 50px 100px -20px, rgba(0, 0, 0, 0.3) 0px 30px 60px -30px, rgba(10, 37, 64, 0.35) 0px -2px 6px 0px inset;
+}
+
+input.search-input.form-control {
+  font-family: monospace;
+  color: darkgreen;
+}
+
+.textParas {
+  border: 1px rgba(0, 0, 0, 0.35) 0px -50px 36px -28px inset;;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  margin-right: 20px;
+  margin-bottom: 20px;
+}
+
+i.bi.bi-pin-fill {
+  color: darkseagreen;
+}
+
+.header-favsPlaces {
+  text-align: left;
+  /* padding-top: 10px;
+  padding-bottom: 10px; */
+}
+
 
 /* styling came with Vite download:
 
