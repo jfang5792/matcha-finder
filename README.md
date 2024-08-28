@@ -1,37 +1,37 @@
-# Project Proposal
+# Matcha Finder
 
-A web app where users can search for, review and rate matcha drinks.
+A web app where users can search for matcha by location, create a secure account to continue building their curated favorites list, where they can also review and rate results.
 
-## Technologies Required
+## Technologies
 
-- Backend: Python
-- Frontend: React (real-time ajax server calls to Google Maps Platform: Places API)
-- Tech stack: Python, Flask, JavaScript, Bootstrap, PostgreSQL, HTML, CSS
-- Google Places API: https://developers.google.com/maps/documentation/places/web-service/text-search
+- Python
+- PostgreSQL
+- React
+- Flask
+- JavaScript
+- Vite
+- Bootstrap
+- HTML
+- CSS
+- Google Places API:
+  - https://developers.google.com/maps/documentation/places/web-service/text-search
+- AWS
 
-## Data Model
+## Key Features
 
-Link: https://dbdiagram.io/d/matcha-finder-6671ee495a764b3c72d0f9b1
+- Data Model - created a PosgreSQL database to manage functionality of features. https://dbdiagram.io/d/matcha-finder-6671ee495a764b3c72d0f9b1
 
-## Roadmap
+![db_model](image-1.png)
 
-### MVP
-
-- Users can search with text/get places
-- Logged in users can favorite places
-- Logged in users can rate results between 1-5 (each star has an id)
-- Logged in users can comment on/review places
-
-### 2.0
-
+- Users can search with text/get places rendered
 - Users can create an account
 - Users can login
+- Logged in users can favorite places
+- Logged in users can rate results (star)
+
+## Future Development
+
+- Logged in users can comment on/review places
 - If the user visits a place more than once, average their ratings for that place
-
-### Nice-to-haves
-
 - Logged in users can set a date to visit and see last date visited
 - Each place will display Google Map image
-
-## Notes
-N/A
