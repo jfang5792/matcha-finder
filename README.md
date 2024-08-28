@@ -22,8 +22,6 @@ A web app where users can search for matcha by location, create a secure account
 - Data Model - created a PosgreSQL database to manage functionality of features.
   https://dbdiagram.io/d/matcha-finder-6671ee495a764b3c72d0f9b1
 
-![db_model](frontend/src/assets/dbmodel.png)
-
 - Users can search with text/get places rendered
 - Users can create an account
 - Users can login
