@@ -1,11 +1,24 @@
 /* Styling for Matcha Finder */
 
+.homepage {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  padding: 30px;
+  background-color: rgb(226, 209, 195);
+}
+
+html {
+  background-color: rgb(226, 209, 195);
+}
+
 .login-body {
   display: flex;
   align-items: center;
   flex-direction: column;
   flex-wrap: nowrap;
   padding: 30px;
+  background-color: rgb(226, 209, 195);
 }
 
 .loginCard {
@@ -37,6 +50,7 @@
 .registerItems {
   justify-content: center;
   display: grid;
+  background-color: rgb(226, 209, 195);
 }
 
 .card {
@@ -46,6 +60,7 @@
   align-items: stretch;
   margin: 2em;
   padding: 2em;
+  box-shadow: rgba(97, 51, 51, 0.45) 0px 25px 20px -20px;
 }
 
 .navbar-banner {
@@ -105,7 +120,6 @@ button.ratingBtn.btn.btn-primary {
   transform: scale(1);
 }
 
-
 .regBtn {
   color: whitesmoke;
   border: none;
@@ -122,13 +136,6 @@ button.ratingBtn.btn.btn-primary {
 .createAccount {
   color:#c7522a;
 }
-
-/* .regForm {
-  display: flex;
-  align-items: center;
-  margin-right: 10px;
-} */
-
 
 .regBtn {
   color: whitesmoke;
@@ -156,8 +163,12 @@ i.bi.bi-pin-fill {
 
 .header-favsPlaces {
   text-align: left;
-  /* padding-top: 10px;
-  padding-bottom: 10px; */
+  background-color: rgb(226, 209, 195);
+}
+
+.favsHeader {
+  background-color: rgb(226, 209, 195);
+  padding: 30px;
 }
 
 
