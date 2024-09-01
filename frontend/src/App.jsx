@@ -4,11 +4,7 @@ import './App.css'
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap-icons/font/bootstrap-icons.css';
 import background from './assets/background.png';
-import {
-  Container,
-  Navbar,
-  Nav,
-} from 'react-bootstrap';
+import { Container, Navbar, Nav } from 'react-bootstrap';
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 import Row from 'react-bootstrap/Row';
@@ -19,16 +15,11 @@ import Register from './Register';
 import Places from './Places';
 import Favorites from './Favorites';
 
-import {
-  Link,
-  Route,
-  Routes,
-  useParams,
-} from "react-router-dom";
+import { Route, Routes } from "react-router-dom"; // Link, useParams
 
 
 function App() {
-  const [count, setCount] = useState(0)
+  // const [count, setCount] = useState(0) //for ratings later
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   return (
@@ -47,8 +38,9 @@ function App() {
 
 function Welcome() {
   return (
-    <div>
-      <h2>Welcome, this is the homepage!</h2>
+    <div className='homepage'>
+     <ul><h2 className="welcomePhrase">Welcome, this is the homepage. </h2></ul>
+     <ul><h3 className="welcomeh2Phrase">Start your quest to find matcha 🍵! </h3></ul>
     </div>
   )
 }
@@ -73,7 +65,6 @@ function NavigationBar(props) {
   }
 
   return (
-
     <Nav
       //"#65e28f"
       style={{"backgroundColor": "#e2d1c3", "justifyContent": "center"}}
@@ -81,7 +72,6 @@ function NavigationBar(props) {
       onSelect={(selectedKey) => alert(`selected ${selectedKey}`
       )
     }
-
     >
       <img
         src={background}
@@ -96,28 +86,29 @@ function NavigationBar(props) {
           <Col xs="auto">
             <Form.Control
               type="text"
-              placeholder="matcha & location"
-              className="mr-sm-2"
+              placeholder="MATCHA & LOCATION"
+              className="search-input"
               onChange={(evt => setSearchInput(evt.target.value))}
               value={searchInput}
             />
           </Col>
-          <Col xs="auto">
-            <Button onClick={handleOnClick} type="submit">SEARCH <i className="bi bi-search"></i> </Button>
-          </Col>
-        </Row>
-        <Nav.Item className="mx-1">
+          </Row>
+          <Button onClick={handleOnClick} type="submit"><i className="bi bi-search"></i> </Button>
+          {/* <Col xs="auto">
+          </Col> */}
+        <Nav.Item className="mx-2">
+        <Button onClick={handleFav} type="submit">FAVORITES </Button>
+        </Nav.Item>
+
+        <Nav.Item className="mx-2">
           <Button onClick={handleRegistration} type="submit">REGISTER </Button>
         </Nav.Item>
 
-        <Nav.Item className="mx-1">
+        <Nav.Item className="mx-2">
         <Button onClick={handleLogin} type="submit">{props.isLoggedIn ? 'LOGOUT': 'LOGIN'}</Button>
         </Nav.Item>
-
-        <Nav.Item>
-        <Button onClick={handleFav} type="submit"><i className="bi bi-suit-heart-fill"></i>FAVORITES</Button>
-        </Nav.Item>
-
+            {/* login <i className="bi bi-person-check-fill"></i> */}
+            {/* logout <i className="bi bi-person-dash-fill"></i> */}
       </Container>
     </Navbar>
   </Nav>
