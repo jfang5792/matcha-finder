@@ -1,5 +1,7 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import Card from 'react-bootstrap/Card';
+import Button from 'react-bootstrap/Button';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap-icons/font/bootstrap-icons.css';
 
@@ -23,7 +25,7 @@ export default function Login(props) {
             const data = await res.json();
             if (data.status === "Ok") {
                 props.toggleLoginCallback && props.toggleLoginCallback(true);
-                setMessage("Log in successful! Loading your Favorites page now.");
+                setMessage("Log in successful! Loading your Favorites page now (if none, start searching!).");
                 await new Promise(resolve => setTimeout(resolve, 4000));
                 navigate('/favorites');
             } else {
@@ -37,13 +39,16 @@ export default function Login(props) {
 
     return (
         <div className='login-body'>
-                <h3 className="loginAccount">Log in below: </h3>
-                {message}
-                <form onSubmit={handleLogin}>
-                    <ul><p><i className="bi bi-envelope-check-fill"></i> Email <input type="text" name="email" onChange={(evt) => setEmail(evt.target.value)} value={email}></input></p></ul>
-                    <ul><p>Password <input type="password" name="password" onChange={(evt) => setPassword(evt.target.value)} value={password}></input></p></ul>
-                    <ul><p><input type="submit"></input></p></ul>
-                </form>
+            <Card>
+                <Card.Title><h3 className="loginAccount">Log in below: </h3></Card.Title>
+                    {message}
+                    <form onSubmit={handleLogin}>
+                        <ul><p className="emailPadding"><i className="bi bi-envelope-check-fill"></i> Email: <input type="text" name="email" onChange={(evt) => setEmail(evt.target.value)} value={email}></input></p></ul>
+                        <ul><p>Password: <input type="password" name="password" onChange={(evt) => setPassword(evt.target.value)} value={password}></input></p></ul>
+                        <ul><p><Button onClick={handleLogin} className="loginBtn" type="submit">Submit</Button></p></ul>
+                        {/* <ul><p><input className="loginBtn" type="submit"></input></p></ul> */}
+                    </form>
+            </Card>
         </div>
     )
 }
