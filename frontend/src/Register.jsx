@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap-icons/font/bootstrap-icons.css';
+import Button from 'react-bootstrap/Button';
 import phrase from './assets/phrase.jpg';
 
 export default function Register() {
@@ -26,23 +27,20 @@ export default function Register() {
         .then((res) => {return res.json()})
         .then((data) => {
             console.log("NEW_ACCOUNT DATA:", data)
-            setMessage(data.msg)
             if(data.status === "Ok") {
-                setEmail(data.email)
                 setUserId(data.userId)
-                navigate('/login');
+                setMessage("Account successfully created. Loading the login page now.")
+                setTimeout(() => {
+                    navigate('/login');
+                }, 4000)
+                // alert("Account successfully created. Loading the login page now.")
             } else {
                 setErrorMessage(data.status.msg)
             }
-            // if(data.status !== "Ok") {
-            //     setErrorMessage(data.status.msg)
-            // } else {
-            //     // setMessage(data.msg)
-            //     setEmail(data.email)
-            //     // setUserId(data.userId)
-            //     navigate('/login');
-            //     return "Account successfully created"
-            // }
+        })
+        .catch((err) => {
+            console.error("Account not created.", err);
+            setMessage("Account with that email already exists. Please log in.");
         })
     }
     return (
@@ -52,9 +50,10 @@ export default function Register() {
             <div>
                 {message}
                 <form className="registerForm" onSubmit={handleRegistration}>
-                    <div className="regForm"> Email  <input type="text" name="email" onChange={(evt) => setEmail(evt.target.value)} value={email}></input></div>
-                    <ul><div className="regForm"> Password  <input type="password" name="password" onChange={(evt) => setPassword(evt.target.value)} value={password}></input></div></ul>
-                    <div className='regSubmitBtn'><ul><input className="regBtn" type="submit"></input></ul></div>
+                    <div className="regForm"><i className="bi bi-envelope-check-fill"></i> Email:  <input type="text" name="email" onChange={(evt) => setEmail(evt.target.value)} value={email}></input></div>
+                    <ul><div className="regForm"> Password:  <input type="password" name="password" onChange={(evt) => setPassword(evt.target.value)} value={password}></input></div></ul>
+                    <ul><p><Button onClick={handleRegistration} className="regBtn" type="submit">Submit</Button></p></ul>
+                    {/* <div className='regSubmitBtn'><ul><input className="regBtn" type="submit"></input></ul></div> */}
                 </form>
             </div>
         </div>
