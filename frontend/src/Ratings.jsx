@@ -9,19 +9,37 @@ export default function RatingStar({placeId}) {
         fetch(`/api/favorites`, {
             method: "POST",
             body: JSON.stringify({
-              place_id: placeId
+              place_id: placeId,
+              rating: 5
             }),
             headers: {"Content-Type": "application/json"},
         })
-        .then((res) => {return res.json()})
+        // .then((res) => {return res.json()})
+        // .then((data) => {
+        //     console.log("DATA:", data)
+        //     setRatedStar(true)
+        // })
+
         .then((data) => {
-            console.log("DATA:", data)
-            setRatingStar(true)
+            if (data.success) {
+                console.log("Rating saved successfully");
+                setRatedStar(true);
+            } else {
+                console.error("Rating not saved, rate again.");
+            }
         })
+        .catch((error) => {
+            console.error("Error saving rating:", error);
+        });
+
     }
 
-    return ratedStar ? <Button onClick={() => {setRatedStar(false)}} className="ratingBtn" > RATED <i className="bi bi-star-fill"></i></Button> :
-     <Button className="ratingBtn-clicked" onClick={() => {setRatedStar(true)}}> RATE <i className="bi bi-star"></i></Button>;
+    return ratedStar ? <ul><Button onClick={() => {setRatedStar(false)}} className="ratingBtn" > Rating Saved! <i className="bi bi-star-fill"></i></Button></ul> :
+     <div>
+        <ul><Button className="ratingBtn-clicked" style={{marginRight: '10px'}} onClick={() => {setRatedStar(true)}}> Excellent <i className="bi bi-star"></i> </Button>
+        <Button className="badRatingBtn-clicked" onClick={() => {setRatedStar(true)}}> Meh <i className="bi bi-x-lg"></i> </Button></ul>
+    </div>
+
 }
 
     // if(isRated) {
