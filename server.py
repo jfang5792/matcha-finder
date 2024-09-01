@@ -4,21 +4,26 @@ from flask import Flask, jsonify, request, redirect, flash, session
 from model import db, connect_to_db
 import crud as crud
 import requests
-
+from dotenv import load_dotenv
 import json
 import os
 
+load_dotenv('secrets.sh')
 app = Flask(__name__)
-app.secret_key = 'MATCHA_FINDER_TOKEN'
+app.secret_key = os.urandom(24)
 
-# app.api_key = os.environ.get("API_KEY")
+api_key = os.getenv("API_KEY")
 # app.api_url = 'https://maps.googleapis.com/maps/api/place/textsearch/'
 # response = requests.get('https://maps.googleapis.com/maps/api/place/textsearch/', headers={"Authorization": f"Bearer {api_key}"})
 
 def get_api_key():
-    pass
+    return api_key
 
 #---------------------------------------------------------------------#
+
+@app.route("/")
+def home():
+    return f"API Key: {get_api_key()}"
 
 @app.route("/api/register", methods=["POST"])
 def api_register():
@@ -49,7 +54,7 @@ def api_login():
     password = request.json.get("password")
     user = crud.get_user_by_email(email)
     if not user or user.password != password:
-        msg = "The email or password you entered was incorrect. Try again please or create an account."
+        msg = "The email or password you entered was incorrect. Try again or create an account."
         status = "Error"
     else:
         session["email"] = user.email
@@ -76,7 +81,7 @@ def view_favs():
     """View list of favorites"""
     email = session.get("email")
     user = crud.get_user_by_email(email)
-    myfavs = crud.get_favs()
+    myfavs = crud.get_user_favs(user)
     favList = []
     for fav in myfavs:
         favList.append({"name": fav.place.name, "formatted_address": fav.place.address, "description": fav.place.description, "place_id": fav.place.place_id})
@@ -93,18 +98,18 @@ def create_favorite():
     if not email:
         flash(f"Must create account or login to add to favorites")
         return redirect("/")
-    # This line below is getting data from the frontend
+    # getting data from the frontend
     google_place_id = request.json.get("place_id")
     #print("user crud.get_user_by_email:", user) #<User user_id=3 email=jenny@gmail>
     #print("place_id from req.json.get:", place_id) #ChIJX57b5vWHhYARRNKgLz2GwFc
 
-    # This is using the google_place_id to query google place details API for place information
-    response = requests.get(f'https://maps.googleapis.com/maps/api/place/details/json?place_id={google_place_id}&key=API_KEY')
+    # using the google_place_id to query google place details API for place information
+    response = requests.get(f'https://maps.googleapis.com/maps/api/place/details/json?place_id={google_place_id}&key=AIzaSyCakkp8f2g5TIqQyxyi5JXiWmJsJWX0qCo')
     # from pprint import pprint
     # print("result")
     # pprint(response.json()['result'])
 
-    # This is parsing response data that's returned from the place details API
+    # parsing response data that's returned from the place details API
     data = response.json()['result']
     print("DATA ERROR HERE:", data)
     name = data["name"]
@@ -122,8 +127,8 @@ def create_favorite():
     place = crud.create_place(name=name, description=description, website=website, address=address, external_id=google_place_id)
     db.session.add(place)
     db.session.commit()
-    # Creating the user favorite place
 
+    # Creating the user favorite place
     user = crud.get_user_by_email(email)
     favorite = crud.create_favorite(user=user, place=place)
     print("favorite is:", favorite)
@@ -131,6 +136,35 @@ def create_favorite():
     db.session.commit()
     return jsonify({"Status": "Ok"})
 
+
+#------------------------------------------------------------------------#
+
+#get endpoint for rated favorites
+@app.route("/api/favorites")
+def view_rated_favs():
+    """View list of rated favorites"""
+    email = session.get("email")
+    user = crud.get_user_by_email(email)
+    rated = crud.get_user_favs(user)
+    user_ratings = crud.get_user_ratings(user)
+    ratedList = []
+    for rate in rated:
+        ratedList.append({"name": rate.place.name, "formatted_address": rate.place.address, "description": rate.place.description, "place_id": rate.place.place_id})
+    print("ratedList:", ratedList)
+    return jsonify(ratedList)
+
+
+@app.route("/api/favorites", methods=["POST"])
+def add_rating():
+    data = request.json
+    place_id = data.get("place_id")
+    email = session.get("email")
+    user = crud.get_user_by_email(email)
+    try:
+        rating = crud.create_rating(user, place_id)
+        return jsonify({"success": True, "rating":rating})
+    except Exception as err:
+        return jsonify({"success": False, "error": str(err)})
 
 #------------------------------------------------------------------------#
 
