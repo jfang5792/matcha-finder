@@ -83,10 +83,17 @@ def delete_place(user_id, place_id):
 #------------------------------------------------------------------------#
 # RATINGS
 
-def create_rating(stars, user, place):
+def create_rating(user, place_id):
     """Create and return a rating on a place"""
-    rating = Rating(stars=stars, user=user, place=place)
+    rating = Rating(user=user, place_id=place_id)
+    db.session.add(rating)
+    db.session.commit()
     return rating
+
+def get_user_ratings(user):
+    """Return favorites by user"""
+    user_ratings = Rating.query.filter_by(user=user).all()
+    return user_ratings
 
 def get_ratings():
     """Return all ratings"""
