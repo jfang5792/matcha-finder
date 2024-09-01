@@ -28,7 +28,7 @@ export default function Places(props) {
         })
         const places = [];
         textSearchPromise.then(data => {
-            places.push(...data.results.slice(0, 3))
+            places.push(...data.results.slice(0, 6))
             // create new array of promises, each with fetch req fetching more details about places with their place_id
             const placeDetailsPromises = places.map(place => {
                 const google_place_id = place.place_id;
@@ -48,38 +48,9 @@ export default function Places(props) {
         })
     }, [searchInput])
 
-
-    //         const placeResults = data.results.slice(0, 3);
-    //         placeResults.forEach(place => {
-    //             const google_place_id = place.place_id
-    //             // Make API call for text summary via place_id
-    //             fetch(`https://maps.googleapis.com/maps/api/place/details/json?place_id=${google_place_id}&key=AIzaSyCakkp8f2g5TIqQyxyi5JXiWmJsJWX0qCo`)
-    //             .then((res) => {
-    //                 return res.json();
-    //             }).then((data => {
-    //                 place.description = data.result?.editorial_summary?.overview;
-    //             }));
-    //         });
-    //         //
-    //         setResults(placeResults)
-    //     })
-    // }, [searchInput])
-
     return (
         <div>
             <MatchaList data={results} addPlacesFavButton={true}/>
         </div>
     )
 }
-
-
-// import Card from 'react-bootstrap/Card';
-// import { CardBody } from 'react-bootstrap';
-// {/* <Card style={{ width: '18rem' }}>
-
-//             <CardBody> */}
-//             {/* <MatchaList data={data.results}/> */}
-//             {/* </CardBody> */}
-//             {/* <CardBody><MatchaList data={data.results}/></CardBody>
-//             <CardBody><MatchaList data={data.results}/></CardBody> */}
-//             {/* </Card> */}
