@@ -4,7 +4,7 @@ Matcha Finder is a single-page web application where users can search for matcha
 
 The app's interactivity is centered around the top navigation bar, featuring a search bar and various event-driven actions throughout the page. Users are greeted with the site's calming color palette of beige and green hues, complemented by picture cards showcasing matcha flavor pairings.
 
-Users will feel that they're on a multi-page app as React's routing system changes the URL and re-renders components. Both React hooks, useState and useEffect are used for responsive navigation showing real-time updates during user interaction.
+Users will feel that they're on a multi-page app as React's routing system changes the URL and re-renders components. Both React hooks, useState and useEffect are used for responsive navigation showing real-time updates during user interaction. Combining data from the Google Places Text Search and Details APIs is leveraged using React's useLocation hook to capture the user's current location, eliminating manual user input.
 
 ![ezgif com-mvpFeature (1)](https://github.com/user-attachments/assets/31fb758f-145c-40da-8bcc-c7921cf207e2)
 
@@ -20,8 +20,8 @@ Users will feel that they're on a multi-page app as React's routing system chang
 - HTML
 - CSS
 - Google Places APIs:
-  - https://developers.google.com/maps/documentation/places/web-service/text-search
-  - https://developers.google.com/maps/documentation/places/web-service/details
+  - <a href="https://developers.google.com/maps/documentation/places/web-service/text-search"> Text Search </a> 
+  - <a href="https://developers.google.com/maps/documentation/places/web-service/details"> Place Details </a>
 - AWS
 
 ## Data Model
@@ -44,6 +44,8 @@ Users will feel that they're on a multi-page app as React's routing system chang
 ![createAccount](https://github.com/user-attachments/assets/678d4919-1d4e-4570-a313-b33354919c0d)
 
 - Users can create an account. Once logged in, users can favorite and rate their place results.
+- These buttons act as event listeners sending Ajax requests to the server.
+  
 ![ezgif com-favRating (2)](https://github.com/user-attachments/assets/5622578a-0f92-4d05-a840-95e4cc4f08d5)
 
 
@@ -59,8 +61,6 @@ Users will feel that they're on a multi-page app as React's routing system chang
 ### Author
 
 Jenny Fang is a fullstack software developer based in San Francisco. She enjoys preparing matcha lattes 🍵, finding the experience meditative and a great way to start the day. Jenny built this web app to make it easier for people to find and enjoy matcha.
+![blurb (1)](https://github.com/user-attachments/assets/58fc6ddf-5d82-45e0-8f18-e3f0f0fd9858)
 
-![resizedPic](https://github.com/user-attachments/assets/dc025ff5-b9ea-48d0-b84e-47857268fa5f)
-
-🔗 Watch Matcha Finder demo below:
-<a href="https://youtu.be/iyz9_N2s1Qg">Youtube Demo </a>
+🔗 Watch Matcha Finder <a href="https://youtu.be/1RKbmN8qf0E?si=6MI4KNiDdFNX2U66"> Demo </a> 
