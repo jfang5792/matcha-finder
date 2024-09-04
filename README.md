@@ -61,6 +61,8 @@ Users will feel that they're on a multi-page app as React's routing system chang
 ### Author
 
 Jenny Fang is a fullstack software developer based in San Francisco. She enjoys preparing matcha lattes 🍵, finding the experience meditative and a great way to start the day. Jenny built this web app to make it easier for people to find and enjoy matcha.
+
+#
 ![blurb (1)](https://github.com/user-attachments/assets/58fc6ddf-5d82-45e0-8f18-e3f0f0fd9858)
 
 🔗 Watch Matcha Finder <a href="https://youtu.be/1RKbmN8qf0E?si=6MI4KNiDdFNX2U66"> Demo </a> 
