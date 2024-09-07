@@ -5,25 +5,21 @@ from model import db, connect_to_db
 import crud as crud
 import requests
 from dotenv import load_dotenv
-import json
 import os
+import json
 
-load_dotenv('secrets.sh')
+load_dotenv(os.path.join(os.path.dirname(__file__), 'env', 'development.env'))
+
 app = Flask(__name__)
-app.secret_key = os.urandom(24)
+app.secret_key = os.getenv('FLASK_SECRET_KEY')
 
-api_key = os.getenv("API_KEY")
-# app.api_url = 'https://maps.googleapis.com/maps/api/place/textsearch/'
-# response = requests.get('https://maps.googleapis.com/maps/api/place/textsearch/', headers={"Authorization": f"Bearer {api_key}"})
+api_key = os.getenv('API_KEY')
 
 def get_api_key():
     return api_key
 
 #---------------------------------------------------------------------#
 
-@app.route("/")
-def home():
-    return f"API Key: {get_api_key()}"
 
 @app.route("/api/register", methods=["POST"])
 def api_register():
@@ -75,6 +71,23 @@ def logout():
 
 #------------------------------------------------------------------------#
 
+#endpoints for places
+@app.route('/api/places/textsearch', methods=['GET'])
+def text_search():
+    query = request.args.get('query')
+    api_key = get_api_key()
+    response = requests.get(f'https://maps.googleapis.com/maps/api/place/textsearch/json?query={query}&key={api_key}')
+    return jsonify(response.json())
+
+@app.route('/api/places/details', methods=['GET'])
+def place_details():
+    place_id = request.args.get('place_id')
+    api_key = get_api_key()
+    response = requests.get(f'https://maps.googleapis.com/maps/api/place/details/json?place_id={place_id}&key={api_key}')
+    return jsonify(response.json())
+
+#------------------------------------------------------------------------#
+
 #get endpoint for list of favorites
 @app.route("/api/favorites")
 def view_favs():
@@ -104,7 +117,7 @@ def create_favorite():
     #print("place_id from req.json.get:", place_id) #ChIJX57b5vWHhYARRNKgLz2GwFc
 
     # using the google_place_id to query google place details API for place information
-    response = requests.get(f'https://maps.googleapis.com/maps/api/place/details/json?place_id={google_place_id}&key=AIzaSyCakkp8f2g5TIqQyxyi5JXiWmJsJWX0qCo')
+    response = requests.get(f'https://maps.googleapis.com/maps/api/place/details/json?place_id={google_place_id}&key={api_key}')
     # from pprint import pprint
     # print("result")
     # pprint(response.json()['result'])
