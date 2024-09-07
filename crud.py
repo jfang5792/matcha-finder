@@ -83,9 +83,9 @@ def delete_place(user_id, place_id):
 #------------------------------------------------------------------------#
 # RATINGS
 
-def create_rating(user, place_id):
+def create_rating(user, place_id, rating_value):
     """Create and return a rating on a place"""
-    rating = Rating(user=user, place_id=place_id)
+    rating = Rating(user=user, place_id=place_id, stars=rating_value)
     db.session.add(rating)
     db.session.commit()
     return rating
