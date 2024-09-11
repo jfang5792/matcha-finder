@@ -10,7 +10,7 @@ import json
 
 load_dotenv(os.path.join(os.path.dirname(__file__), "env", "development.env"))
 
-app = Flask(__name__)
+app = Flask(__name__, static_folder="../frontend/dist", static_url_path="/")
 app.secret_key = os.getenv("FLASK_SECRET_KEY")
 
 api_key = os.getenv("API_KEY")
@@ -21,10 +21,6 @@ def get_api_key():
 
 
 # ---------------------------------------------------------------------#
-@app.route("/")
-def index():
-    """View homepage."""
-    return redirect("/")
 
 
 @app.route("/api/register", methods=["POST"])
@@ -222,7 +218,22 @@ def add_rating():
 
 # ------------------------------------------------------------------------#
 
+
+@app.route("/", defaults={"path": ""})
+@app.route("/<path:path>")
+def index(path):
+    return app.send_static_file("index.html")
+
+
+@app.errorhandler(404)
+def not_found(_error):
+    return app.send_static_file("index.html")
+
+
+# ---------------------------------------------------------------------#
+
+
 if __name__ == "__main__":
     connect_to_db(app)
-    app.run()
+    app.run(port=6060)
     # app.run(host="0.0.0.0", debug=True, port=6060)

@@ -3,3 +3,4 @@ env/
 secrets.sh
 .gitignore
 env/development.env
+matcha.sql
