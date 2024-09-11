@@ -10,7 +10,7 @@ import json
 
 load_dotenv(os.path.join(os.path.dirname(__file__), "env", "development.env"))
 
-app = Flask(__name__, static_folder="../frontend/dist", static_url_path="/")
+app = Flask(__name__, static_folder="frontend/dist", static_url_path="/")
 app.secret_key = os.getenv("FLASK_SECRET_KEY")
 
 api_key = os.getenv("API_KEY")
