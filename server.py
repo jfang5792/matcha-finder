@@ -12,6 +12,7 @@ load_dotenv(os.path.join(os.path.dirname(__file__), "env", "development.env"))
 
 app = Flask(__name__, static_folder="frontend/dist", static_url_path="/")
 app.secret_key = os.getenv("FLASK_SECRET_KEY")
+print("Secret Key Check:", app.secret_key)
 
 api_key = os.getenv("API_KEY")
 
@@ -47,19 +48,41 @@ def api_register():
 
 
 @app.route("/api/login", methods=["POST"])
-def api_login():
-    """Process user login."""
-    email = request.json.get("email")
-    password = request.json.get("password")
-    user = crud.get_user_by_email(email)
-    if not user or user.password != password:
-        msg = "The email or password you entered was incorrect. Try again or create an account."
-        status = "Error"
-    else:
+def login():
+    try:
+        data = request.json
+        print("Login Data ->", data)
+        email = request.json.get("email")
+        password = request.json.get("password")
+        user = crud.get_user_by_email(email)
+        if not user or user.password != password:
+            return jsonify(
+                {
+                    "msg": "The email or password you entered was incorrect. Try again or create an account.",
+                    "status": "Error",
+                }
+            ), 401  # failed login error code
         session["email"] = user.email
-        msg = f"Welcome back, {user.email}!"
-        status = "Ok"
-    return jsonify({"msg": msg, "status": status})
+        return jsonify({"msg": f"Welcome back, {user.email}!", "status": "Ok"})
+    except Exception as e:
+        print(f"Login error: {str(e)}")
+        return jsonify({"status": "Error", "msg": str(e)}), 500
+
+
+# @app.route("/api/login", methods=["POST"])
+# def api_login():
+#     """Process user login."""
+#     email = request.json.get("email")
+#     password = request.json.get("password")
+#     user = crud.get_user_by_email(email)
+#     if not user or user.password != password:
+#         msg = "The email or password you entered was incorrect. Try again or create an account."
+#         status = "Error"
+#     else:
+#         session["email"] = user.email
+#         msg = f"Welcome back, {user.email}!"
+#         status = "Ok"
+#     return jsonify({"msg": msg, "status": status})
 
 
 # helper function:
