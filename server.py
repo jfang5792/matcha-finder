@@ -11,7 +11,7 @@ import json
 load_dotenv(os.path.join(os.path.dirname(__file__), "env", "development.env"))
 
 app = Flask(__name__, static_folder="frontend/dist", static_url_path="/")
-app.secret_key = os.getenv("FLASK_SECRET_KEY")
+app.secret_key = os.getenv("FLASK_SECRET_KEY") or os.urandom(24)
 print("Secret Key Check:", app.secret_key)
 
 api_key = os.getenv("API_KEY")
