@@ -22,7 +22,7 @@ Users will feel that they're on a multi-page app as React's routing system chang
 - Google Places APIs:
   - <a href="https://developers.google.com/maps/documentation/places/web-service/text-search"> Text Search </a> 
   - <a href="https://developers.google.com/maps/documentation/places/web-service/details"> Place Details </a>
-- AWS
+- <b>Deployed on AWS: http://35.95.146.51/ </b>
 
 ## Data Model
 
@@ -66,3 +66,4 @@ Jenny Fang is a fullstack software developer based in San Francisco. She enjoys 
 ![blurb (1)](https://github.com/user-attachments/assets/58fc6ddf-5d82-45e0-8f18-e3f0f0fd9858)
 
 🔗 Watch Matcha Finder <a href="https://youtu.be/1RKbmN8qf0E?si=6MI4KNiDdFNX2U66"> Demo </a> 
+<br>Deployed here: http://35.95.146.51/</br>
