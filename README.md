@@ -20,9 +20,8 @@ Users will feel that they're on a multi-page app as React's routing system chang
 - HTML
 - CSS
 - Google Places APIs:
-  - <a href="https://developers.google.com/maps/documentation/places/web-service/text-search"> Text Search </a> 
+  - <a href="https://developers.google.com/maps/documentation/places/web-service/text-search"> Text Search </a>
   - <a href="https://developers.google.com/maps/documentation/places/web-service/details"> Place Details </a>
-- Deployed on AWS: <a href="http://matcha-finder.com">Matcha Finder</a> website
 
 ## Data Model
 
@@ -31,7 +30,6 @@ Users will feel that they're on a multi-page app as React's routing system chang
 <ul><a href=https://dbdiagram.io/d/matcha-finder-6671ee495a764b3c72d0f9b1>https://dbdiagram.io/d/matcha-finder-6671ee495a764b3c72d0f9b1</a></u>
 
   <img width="700" alt="dbModel" src="frontend/src/assets/dbmodel.png" style="max-width: 20%;">
-
 
 ## Key Features
 
@@ -45,9 +43,8 @@ Users will feel that they're on a multi-page app as React's routing system chang
 
 - Users can create an account. Once logged in, users can favorite and rate their place results.
 - These buttons act as event listeners sending Ajax requests to the server.
-  
-![ezgif com-favRating (2)](https://github.com/user-attachments/assets/5622578a-0f92-4d05-a840-95e4cc4f08d5)
 
+![ezgif com-favRating (2)](https://github.com/user-attachments/assets/5622578a-0f92-4d05-a840-95e4cc4f08d5)
 
 ## Future Development
 
@@ -63,7 +60,5 @@ Users will feel that they're on a multi-page app as React's routing system chang
 Jenny Fang is a fullstack software developer based in San Francisco. She enjoys preparing matcha lattes 🍵, finding the experience meditative and a great way to start the day. Jenny built this web app to make it easier for people to find and enjoy matcha.
 
 #
-![blurb (1)](https://github.com/user-attachments/assets/58fc6ddf-5d82-45e0-8f18-e3f0f0fd9858)
 
-🔗 Watch Matcha Finder <a href="https://youtu.be/1RKbmN8qf0E?si=6MI4KNiDdFNX2U66"> Demo </a> 
-<br>Deployed here:</br> <a href="http://matcha-finder.com">Matcha Finder</a>
+![blurb (1)](https://github.com/user-attachments/assets/58fc6ddf-5d82-45e0-8f18-e3f0f0fd9858)
